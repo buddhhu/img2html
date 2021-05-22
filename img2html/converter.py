@@ -9,13 +9,13 @@ from itertools import cycle
 import jinja2
 from PIL import Image
 
-Point = namedtuple('Point', ['x', 'y'])
-Pixel = namedtuple('Pixel', ['r', 'g', 'b'])
-RenderItem = namedtuple('RenderItem', ['color', 'char'])
+Point = namedtuple("Point", ["x", "y"])
+Pixel = namedtuple("Pixel", ["r", "g", "b"])
+RenderItem = namedtuple("RenderItem", ["color", "char"])
 RenderGroup = list
 HTMLImage = list
 
-TEMPLATE = '''
+TEMPLATE = """
 <html>
 <head>
     <meta charset="utf-8">
@@ -39,23 +39,25 @@ TEMPLATE = '''
 {% endfor %}
 </div>
 </body>
-</html>'''
+</html>"""
 
 
 class Img2HTMLConverter(object):
-    def __init__(self,
-                 font_size=10,
-                 char='䦗',
-                 background='#000000',
-                 title='img2html by xlzd',
-                 font_family='monospace',
-                 progress_callback=None):
+    def __init__(
+        self,
+        font_size=10,
+        char="䦗",
+        background="#000000",
+        title="img2html by xlzd",
+        font_family="monospace",
+        progress_callback=None,
+    ):
         self.font_size = font_size
         self.background = background
         self.title = title
         self.font_family = font_family
         if not isinstance(char, str):
-            char = char.decode('utf-8')
+            char = char.decode("utf-8")
         self.char = cycle(char)
 
     def convert(self, source):
@@ -66,8 +68,7 @@ class Img2HTMLConverter(object):
         col_blocks = int(round(float(height) / self.font_size))
 
         html_image = HTMLImage()
-        progress = 0.0
-        step = 1. / (col_blocks * row_blocks)
+        1.0 / (col_blocks * row_blocks)
 
         for col in range(col_blocks):
             render_group = RenderGroup()
@@ -75,7 +76,9 @@ class Img2HTMLConverter(object):
                 pixels = []
                 for y in range(self.font_size):
                     for x in range(self.font_size):
-                        point = Point(row * self.font_size + x, col * self.font_size + y)
+                        point = Point(
+                            row * self.font_size + x, col * self.font_size + y
+                        )
                         if point.x >= width or point.y >= height:
                             continue
                         pixels.append(Pixel(*image.getpixel(point)[:3]))
@@ -96,12 +99,12 @@ class Img2HTMLConverter(object):
             background=self.background,
             title=self.title,
             font_family=self.font_family,
-            width=self.font_size * len(html_image[0]) * 2
+            width=self.font_size * len(html_image[0]) * 2,
         )
 
     @staticmethod
     def rgb2hex(pixel):
-        return '{:02x}{:02x}{:02x}'.format(*pixel)
+        return "{:02x}{:02x}{:02x}".format(*pixel)
 
     @staticmethod
     def get_average(pixels):
