@@ -81,7 +81,7 @@ class Img2HTMLConverter(object):
                         pixels.append(Pixel(*image.getpixel(point)[:3]))
                 average = self.get_average(pixels=pixels)
                 color = self.rgb2hex(average)
-                render_item = RenderItem(color=color, char=self.char)
+                render_item = RenderItem(color=color, char=next(self.char))
                 render_group.append(render_item)
 
             html_image.append(render_group)
