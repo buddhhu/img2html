@@ -12,8 +12,6 @@ from PIL import Image
 Point = namedtuple("Point", ["x", "y"])
 Pixel = namedtuple("Pixel", ["r", "g", "b"])
 RenderItem = namedtuple("RenderItem", ["color", "char"])
-RenderGroup = list
-HTMLImage = list
 
 TEMPLATE = """
 <html>
@@ -67,11 +65,10 @@ class Img2HTMLConverter(object):
         row_blocks = int(round(float(width) / self.font_size))
         col_blocks = int(round(float(height) / self.font_size))
 
-        html_image = HTMLImage()
-        1.0 / (col_blocks * row_blocks)
+        html_image = []
 
         for col in range(col_blocks):
-            render_group = RenderGroup()
+            render_group = []
             for row in range(row_blocks):
                 pixels = []
                 for y in range(self.font_size):
