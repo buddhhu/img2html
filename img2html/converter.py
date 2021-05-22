@@ -42,21 +42,6 @@ TEMPLATE = '''
 </html>'''
 
 
-_c = cycle(r'/-\|')
-
-
-def _progress_callback(percent):
-    if percent == 100:
-        print('\rDone!               ')
-    else:
-        import sys, time
-        lca = getattr(_progress_callback, '_last_call_at', 0)
-        if time.time() - lca > 0.1:
-            _progress_callback._last_call_at = time.time()
-            sys.stdout.write('\r{} progress: {:.2f}%'.format(_c.next(), percent))
-            sys.stdout.flush()
-
-
 class Img2HTMLConverter(object):
     def __init__(self,
                  font_size=10,
@@ -72,7 +57,6 @@ class Img2HTMLConverter(object):
         if not isinstance(char, str):
             char = char.decode('utf-8')
         self.char = cycle(char)
-        self._prg_cb = progress_callback or _progress_callback
 
     def convert(self, source):
         image = Image.open(source)
@@ -100,12 +84,8 @@ class Img2HTMLConverter(object):
                 render_item = RenderItem(color=color, char=self.char)
                 render_group.append(render_item)
 
-                progress += step
-                self._prg_cb(progress * 100)
-
             html_image.append(render_group)
 
-        self._prg_cb(100)
         return self.render(html_image)
 
     def render(self, html_image):
