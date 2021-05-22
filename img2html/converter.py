@@ -85,12 +85,12 @@ class Img2HTMLConverter(object):
         progress = 0.0
         step = 1. / (col_blocks * row_blocks)
 
-        for col in xrange(col_blocks):
+        for col in range(col_blocks):
             render_group = RenderGroup()
-            for row in xrange(row_blocks):
+            for row in range(row_blocks):
                 pixels = []
-                for y in xrange(self.font_size):
-                    for x in xrange(self.font_size):
+                for y in range(self.font_size):
+                    for x in range(self.font_size):
                         point = Point(row * self.font_size + x, col * self.font_size + y)
                         if point.x >= width or point.y >= height:
                             continue
